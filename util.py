@@ -196,6 +196,17 @@ class PriorityQueue:
         # If item not in priority queue, do the same thing as self.push.
 
         "*** YOUR CODE HERE ***"
+        for index, (p, c, i) in enumerate(self.heap):
+            if i == item:
+                if p <= priority:
+                    break
+                del self.heap[index]
+                self.heap.append((priority, c, item))
+                heapq.heapify(self.heap)
+                break
+        else:
+            self.push(item, priority)
+        "*** YOUR CODE HERE ***"
 
 class PriorityQueueWithFunction(PriorityQueue):
     """
