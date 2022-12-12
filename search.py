@@ -140,7 +140,27 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # define a queue for open list
+    open_queue = util.Queue()
+    # initialize open stack with start position
+    open_queue.push((problem.getStartState(), []))
+    visited_list = []
+
+    while not open_queue.isEmpty():
+        A, actions = open_queue.pop()
+        if A not in visited_list:
+            visited_list.append(A)
+            if problem.isGoalState(A):
+                return actions
+            else:
+                # generate successors of A
+                    children_of_A = problem.getSuccessors(A)
+
+                    for each_child in children_of_A:
+                            open_queue.push((each_child[0], actions + [each_child[1]]))
+    return []
+
+
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
