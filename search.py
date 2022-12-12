@@ -87,7 +87,55 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    # define a stack for open list
+    open_stack = util.Stack()
+    # initialize open stack with start position
+    open_stack.push((problem.getStartState(),'start',0))
+    # define a stack for closed list
+    closed_stack = util.Stack()
+    backtrack_checkpoints = util.Stack()
+    visited_list = []
+
+    while not open_stack.isEmpty():
+
+        A = open_stack.pop()
+        visited_list.append(A[0])
+        if problem.isGoalState(A[0]):
+            closed_stack.push(A)
+            break
+        else:
+            # generate successors of A
+            children_of_A = problem.getSuccessors(A[0])
+            # push A on closed stack
+            closed_stack.push(A)
+            alreadyVisitedChildren = 0
+            for each_child in children_of_A:
+                if (each_child[0] in visited_list):
+                    alreadyVisitedChildren +=1
+                else:
+                    open_stack.push(each_child)
+
+            if (len(children_of_A) - alreadyVisitedChildren) > 1:
+                backtrack_checkpoints.push(A)
+                if len(children_of_A) == 4:
+                    backtrack_checkpoints.push(A)
+
+            if alreadyVisitedChildren == len(children_of_A):
+                return_point = backtrack_checkpoints.pop()
+                temp_point = closed_stack.pop()
+                while return_point[0] != temp_point[0]:
+                    temp_point = closed_stack.pop()
+                closed_stack.push(temp_point)
+    actions = []
+    while not closed_stack.isEmpty():
+        dir = closed_stack.pop()[1]
+        if dir!='start':
+                actions.append(dir)
+
+    actions.reverse()
+    return actions
+
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
@@ -97,6 +145,7 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
